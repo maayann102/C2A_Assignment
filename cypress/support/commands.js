@@ -26,9 +26,10 @@
 
 /// <reference types="Cypress"/>
 
-const pdfparse = require('pdf-parse');
+const pdfParse = require('pdf-parse');
 
-Cypress.Commands.add('getTextFromPDF', (fileName) => {
-    const PDFtext = pdfparse(fileName).text;
-    return PDFtext;
-})
+Cypress.Commands.add('getTextFromPDF', (filePath) => {
+  return cy.readFile(filePath, 'binary').then((file) => {
+    return pdfParse(file, { pagerender: false });
+  });
+});
